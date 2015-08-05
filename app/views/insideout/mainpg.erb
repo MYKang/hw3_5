@@ -1,0 +1,130 @@
+<h1 align="center">나와 꼭 맞는 스터디를 구하세요.</h1>
+<div class="enroll">
+  <center><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">모임 등록하기</button></center>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">이 책을 추천합니다</h4>
+        </div>
+        <div class="modal-body">
+        <form action="/insideout/enroll" method="POST">
+          <div class="container-fluid">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-8">
+                  <label for="text-title" class="control-label">글 제목:</label>
+                  <input type="text" class="form-control" name="grouptitle" id="text-title">
+                </div>
+                <div class="col-md-4">
+                  <label class="control-label">스터디 종류:</label><br>
+                  <input type="radio" name="groupkinds" value="reading" checked> 독서
+                  <input type="radio" name="groupkinds" value="exam">시험준비
+                  <input type="radio" name="groupkinds" value="contest">공모전
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="text-content" class="control-label">글 내용:</label>
+              <textarea class="form-control" name="groupcontent" id="text-content" rows="4" cols="50"></textarea>
+            </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="text-author" class="control-label">작성자:</label>
+                  <input type="text" name="groupauthor" class="form-control" id="text-author">
+                </div>
+                <div class="col-md-6">
+                  <label class="control-label">비밀번호:</label><br>
+                  <input type="password" name="grouppw" class="form-control">
+                </div>
+              </div><br>
+            </div>
+          
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">취소하기</button>
+          <input type="submit" button type="button" class="btn btn-primary" value="등록하기"></button>
+        </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <h2 class="heading">독서 스터디</h2>
+    <div id='cssmenu'>
+    <ul>
+      <% @grouplist.each do |x| %>
+        <li class='has-sub'><a href='#'><span><span style="color:yellow">[<%= x.groupauthor %>]</span> <%= x.grouptitle %></span></a>
+          <ul>
+             <li><span><%= x.groupcontent %></span></li>
+             <li><span style="float:right;"><a href = "/" onClick="asking('<%= x.id %>', '<%= x.grouppw %>', '<%= x.studykinds %>');" > [삭제] </a></span></li><br>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+    </div><br>
+    <p style="text-align:right;"><a href="#">모집글 수<span class="badge"><%= @grouplist.count %></span></a></p>
+  </div>
+
+  <div class="col-md-4">
+    <h2 class="heading">시험준비 스터디</h2>
+    <div id='cssmenu'>
+    <ul>
+      <% @grouplist2.each do |x| %>
+        <li class='has-sub'><a href='#'><span><span style="color:yellow">[<%= x.groupauthor %>]</span> <%= x.grouptitle %></span></a>
+          <ul>
+             <li><span><%= x.groupcontent %></span></li>
+             <li><span style="float:right;"><a href = "/" onClick="asking('<%= x.id %>', '<%= x.grouppw %>', '<%= x.studykinds %>');" > [삭제] </a></span></li><br>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+    </div><br>
+    <p style="text-align:right;"><a href="#">모집글 수<span class="badge"><%= @grouplist2.count %></span></a></p>
+  </div>
+  
+  <div class="col-md-4">
+    <h2 class="heading">공모전 준비 스터디</h2>
+    <div id='cssmenu'>
+    <ul>
+      <% @grouplist3.each do |x| %>
+        <li class='has-sub'><a href='#'><span><span style="color:yellow">[<%= x.groupauthor %>]</span> <%= x.grouptitle %></span></a>
+          <ul>
+             <li><span><%= x.groupcontent %></span></li>
+             <li><span style="float:right;"><a href = "/" onClick="asking('<%= x.id %>', '<%= x.grouppw %>', '<%= x.studykinds %>');" > [삭제] </a></span></li><br>
+          </ul>
+        </li>
+      <% end %>
+    </ul>
+    </div><br>
+    <p style="text-align:right;"><a href="#">모집글 수<span class="badge"><%= @grouplist3.count %></span></a></p>
+  </div>     
+</div>
+     
+     
+<script>
+var asking = function(id, passw, kind){
+    var answer = prompt("비밀번호를 입력하세요!", "대소문자 상관없이 입력하세요")
+    if (answer.toLowerCase() === passw) {
+        var checking = confirm("정말 삭제하시겠습니까?");
+        if (checking){
+            if(kind === "reading"){
+                location = "/insideout/delete/"+id
+                }else if(kind === "exam"){
+                  location = "/insideout/delete2/"+id
+                  }else{
+                    location = "/insideout/delete3/"+id
+                    };
+            }else{
+                location = "/"
+                }
+    }else {
+    location = "/"
+    }
+};
+</script>
